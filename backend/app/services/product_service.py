@@ -13,10 +13,10 @@ class ProductService:
     def get_all_product(self) -> List[ProductResponse]:
         products = self.product_repository.get_all()
         products_response =  [ProductResponse.model_validate(prod) for prod in products]
-        return ProductListResponse(product=products_response, total=len(products_response))
+        return ProductListResponse(products=products_response, total=len(products_response))
     
     def get_product_by_id(self, product_id: int) -> ProductResponse:
-        product = self.product_repository.get_by_id(product)
+        product = self.product_repository.get_by_id(product_id)
         if not product:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Товара с этим ID: {product_id} не найдено")
         return ProductResponse.model_validate(product)
@@ -27,7 +27,7 @@ class ProductService:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Категории с этим ID: {category_id} не найдено")
         products = self.product_repository.get_by_category(category_id)
         products_response = [ProductResponse.model_validate(prod) for prod in products]
-        return ProductListResponse(products-products_response,total=len(products_response))
+        return ProductListResponse(products=products_response,total=len(products_response))
     
     def create_product(self, product_data: ProductCreate) -> ProductResponse:
         category = self.category_repository.get_by_id(product_data.category_id)

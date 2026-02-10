@@ -8,7 +8,7 @@ class ProductBase(BaseModel):
     description: Optional[str] = Field(None,description="Описание товара")
     price: float = Field(..., gt=0, description="Стоимость товара в рублях(должна быть больше чем 0)")
     category_id: int = Field(..., description="ID категории")
-    image_url = Optional[str] = Field(None, description="Ссылка на изображение товара")
+    image_url: Optional[str] = Field(None, description="Ссылка на изображение товара")
     
 
 class ProductCreate(ProductBase):
