@@ -5,10 +5,10 @@ from .config import settings
 
 engine = create_engine(
     settings.database_url,
-    connect_args={"check_same_thread":False}
+    connect_args={"check_same_thread": False}
 )
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False,bind=engine)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 def get_db():
@@ -19,4 +19,5 @@ def get_db():
         db.close()
 
 def init_db():
+    from .models import category, product
     Base.metadata.create_all(bind=engine)

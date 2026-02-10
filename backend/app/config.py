@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     app_name: str = "Shoe Shop"
     debug: bool = True
-    database_url: str = "sqlite:/// ./shop.db"
+    database_url: str = "sqlite:///./shop.db"
     cors_origins: list = [
         "https://localhost:5173",
         "https://localhost:3000",
