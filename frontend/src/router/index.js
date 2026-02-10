@@ -29,6 +29,12 @@ const router = createRouter({
       },
     },
     {
+    path: '/admin',
+    name: 'admin',
+    component: () => import('@/views/AdminPage.vue'),
+    meta: { title: 'Admin Panel' }
+    },
+    {
       path: '/cart',
       name: 'cart',
       component: CartPage,

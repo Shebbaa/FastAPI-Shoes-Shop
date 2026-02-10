@@ -8,9 +8,18 @@
   <div class="min-h-screen bg-white">
     <div class="max-w-7xl mx-auto px-4 py-8">
       <!-- Заголовок -->
-      <div class="mb-8">
-        <h1 class="text-4xl font-extrabold text-black mb-2">Каталог обуви</h1>
-        <p class="text-gray-500">Откройте для себя наши удивительные товары</p>
+      <div class="mb-8 flex justify-between items-end">
+        <div>
+          <h1 class="text-4xl font-extrabold text-black mb-2">Каталог обуви</h1>
+          <p class="text-gray-500">Откройте для себя наши удивительные товары</p>
+        </div>
+        
+        <RouterLink 
+          to="/admin" 
+          class="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium shadow-lg"
+        >
+          ⚙️ Управление товарами
+        </RouterLink>
       </div>
 
       <div class="flex gap-8">

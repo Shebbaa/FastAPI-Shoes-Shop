@@ -74,6 +74,28 @@ export const useProductsStore = defineStore('products', () => {
     }
   }
 
+  async function createCategory(categoryData) {
+    try {
+      const response = await categoriesAPI.create(categoryData)
+      categories.value.push(response.data) 
+      return response.data
+    } catch (err) {
+      console.error('Error creating category:', err)
+      throw err
+    }
+  }
+
+  async function createProduct(productData) {
+    try {
+      const response = await productsAPI.create(productData)
+      products.value.push(response.data) 
+      return response.data
+    } catch (err) {
+      console.error('Error creating product:', err)
+      throw err
+    }
+  }
+
   /**
    * Установить фильтр по категории
    */
@@ -104,5 +126,7 @@ export const useProductsStore = defineStore('products', () => {
     fetchCategories,
     setCategory,
     clearCategoryFilter,
+    createCategory, 
+    createProduct,
   }
 })

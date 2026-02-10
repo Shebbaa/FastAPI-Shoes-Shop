@@ -42,6 +42,10 @@ export const productsAPI = {
   getByCategory(categoryId) {
     return apiClient.get(`/products/category/${categoryId}`)
   },
+
+  create(productData) {
+    return apiClient.post('/products', productData)
+  },
 }
 
 /**
@@ -60,6 +64,10 @@ export const categoriesAPI = {
    */
   getById(id) {
     return apiClient.get(`/categories/${id}`)
+  },
+  
+  create(categoryData) {
+    return apiClient.post('/categories', categoryData)
   },
 }
 
