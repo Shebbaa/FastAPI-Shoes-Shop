@@ -17,6 +17,40 @@ const apiClient = axios.create({
     'Content-Type': 'application/json',
   },
 })
+// frontend/src/services/api.js
+
+// ... существующий код (apiClient) ...
+
+/**
+ * API методы для авторизации
+ */
+export const authAPI = {
+  register(userData) {
+    return apiClient.post('/register', userData)
+  },
+
+  login(username, password) {
+    // FastAPI ожидает x-www-form-urlencoded для эндпоинта /token
+    const formData = new URLSearchParams()
+    formData.append('username', username)
+    formData.append('password', password)
+    
+    return apiClient.post('/token', formData, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+  }
+}
+
+// Добавим перехватчик (interceptor) для автоматической подстановки токена
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('auth_token')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
 
 /**
  * API методы для работы с товарами

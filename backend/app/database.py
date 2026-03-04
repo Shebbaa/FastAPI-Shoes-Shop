@@ -19,5 +19,5 @@ def get_db():
         db.close()
 
 def init_db():
-    from .models import category, product
+    from .models import category, product, user  
     Base.metadata.create_all(bind=engine)

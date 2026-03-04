@@ -1,13 +1,9 @@
 // frontend/src/router/index.js
-/**
- * Конфигурация Vue Router.
- * Определяет маршруты приложения и связывает их с компонентами.
- */
-
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/views/HomePage.vue'
 import ProductDetailPage from '@/views/ProductDetailPage.vue'
 import CartPage from '@/views/CartPage.vue'
+import LoginPage from '@/views/LoginPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,47 +12,62 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomePage,
-      meta: {
-        title: 'Shop - Home',
-      },
+      meta: { title: 'Shop - Home' },
     },
     {
       path: '/product/:id',
       name: 'product-detail',
       component: ProductDetailPage,
-      meta: {
-        title: 'Product Details',
-      },
-    },
-    {
-    path: '/admin',
-    name: 'admin',
-    component: () => import('@/views/AdminPage.vue'),
-    meta: { title: 'Admin Panel' }
+      meta: { title: 'Product Details' },
     },
     {
       path: '/cart',
       name: 'cart',
       component: CartPage,
-      meta: {
-        title: 'Shopping Cart',
-      },
+      meta: { title: 'Shopping Cart' },
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginPage,
+      meta: { title: 'Войти', guestOnly: true },
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('@/views/AdminPage.vue'),
+      meta: { title: 'Admin Panel', requiresAdmin: true },
     },
   ],
-  // Прокрутка страницы вверх при переходе между роутами
   scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      return { top: 0 }
-    }
+    return savedPosition || { top: 0 }
   },
 })
 
-// Обновление заголовка страницы при навигации
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title || 'FastAPI Shop'
-  next()
+
+  // Динамически импортируем store чтобы избежать circular deps
+  import('@/stores/auth').then(({ useAuthStore }) => {
+    const authStore = useAuthStore()
+
+    // Страница только для гостей (логин/регистрация)
+    if (to.meta.guestOnly && authStore.isLoggedIn) {
+      return next('/')
+    }
+
+    // Страница требует роль admin
+    if (to.meta.requiresAdmin) {
+      if (!authStore.isLoggedIn) {
+        return next({ name: 'login', query: { redirect: to.fullPath } })
+      }
+      if (!authStore.isAdmin) {
+        return next({ name: 'home' })
+      }
+    }
+
+    next()
+  })
 })
 
 export default router

@@ -6,38 +6,38 @@ from .database import init_db
 from .routes import *
 
 app = FastAPI(
-    title = settings.app_name,
-    debug = settings.debug,
-    docs_url = '/api/docs',
-    redoc_url = '/api/redoc'
+    title=settings.app_name,
+    debug=settings.debug,
+    docs_url="/api/docs",
+    redoc_url="/api/redoc",
 )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins = settings.cors_origins,
-    allow_credentials = True,
-    allow_methods = ["*"],
-    allow_headers=['*'],
+    allow_origins=settings.cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-app.mount('/static',StaticFiles(directory=settings.static_dir))
+app.mount("/static", StaticFiles(directory=settings.static_dir))
 
 app.include_router(products_router)
 app.include_router(categories_router)
 app.include_router(cart_router)
+app.include_router(auth_router)  
 
-@app.on_event('startup')
+
+@app.on_event("startup")
 def on_startup():
-    init_db
+    init_db()  #
 
-@app.get('/')
+
+@app.get("/")
 def root():
-    return {
-        'message': 'Welcome to shoes shop',
-        'docs': 'api/docs',
-    }
+    return {"message": "Welcome to shoes shop", "docs": "api/docs"}
 
 
-@app.get('/health')
+@app.get("/health")
 def health_check():
-    return {'status': 'healthy'}
+    return {"status": "healthy"}
