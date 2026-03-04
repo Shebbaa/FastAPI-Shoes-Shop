@@ -13,6 +13,10 @@
 
 ---
 
+## Демонстрация
+
+* **Доступна по ссылке:** https://drive.google.com/drive/folders/1WrCBtaNY023bFThhZ4MmCUmlIXuktaxu?usp=sharing
+
 ## 🚀 Быстрый запуск (Backend)
 
 1.  **Перейдите в папку бэкенда:**
